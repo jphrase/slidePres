@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Interactive Linear Modelling with Time Series</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Interactive Linear Modelling with Time Series">
+  <meta name="author" content="John Fraser">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Interactive Linear Modelling with Time Series</h1>
+    <h2>A Shiny App</h2>
+    <p>John Fraser<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Time series data is collected extensively in many fields, including <a href="https://en.wikipedia.org/wiki/Hydrology">hydrology</a>.<br>
+Typically flow in a stream or river will be monitored for a relatively short period of time (1-5 years), but it is required to estimate a long term flow series for the site in order to predict peak flows, flood hazards or the potential for hydro power generation.<br>
+A long term flow series is usually produced by comparing the short term record from the site of interest to other nearby stations with a long term record. Multiple linear regression is a common technique to develop a relationship between stations and produce a long term simulated series for a station of interest.<br>
+Another use for this technique is to fill in periods of missing data due to instrumentation failure or other reasons.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>An Example Data Set</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>An example data set is provided consisting of 1 year of flow data from 3 stations. The stations are in the same region (within 100 km) and so subject to the same general weather systems and are expected to have similar flow series. The flow data is scaled to the size of its watershed <a href="https://en.wikipedia.org/wiki/Drainage_basin">(drainage basin)</a> for for more comparable plotting.<br>
+One station, &quot;Stn3&quot;, is missing data for the month of November and we wish to fill in the missing data with an estimated series based on a linear model using a prior period of data from one or both of the other two stations.<br>
+Here is a plot of the example data set using both Stn1 and Stn2 as predictors (ggplot2):<br>
+<img src="assets/fig/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" /></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Interactive LM</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The Shiny App provides the user the ability to select a date range for training the model and a selector to choose one or both of &quot;Stn1&quot; and &quot;Stn2&quot; as predictors. The date range is limited to be a period prior to Nov and at least 7 days in length.<br>
+The full time series of all 3 stations, as well as the simulated series for Stn3, are plotted and the adjusted r-squared of the model fit is displayed.<br>
+A second plot of just the Nov and Dec data is also displayed for more detail. The Dec data is used for validation/testing and the RMSE between the simulated and actual Stn3 data is given.<br>
+The plots and outputs are updated each time a new date range for training or alternate station selection is made.<br>
+Outputs from example data in previous slide:  </p>
+
+<pre><code class="r">paste0(100 * round(summary(fit)$adj.r.squared, 2), &quot;%&quot;)
+## [1] &quot;90%&quot;
+round(sqrt(sum((dat[month(dat$Date) == 12, &quot;Sim_Stn3&quot;] - dat[month(dat$Date) == 
+    12, &quot;Stn3&quot;])^2)/31), 1)
+## [1] 15.3
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Going Further</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This Shiny App is a demonstration and uses an example data set. A more useful version would allow the user to upload their own flow data series and then select regional stations to use as predictors.  </p>
+
+<p>If possible, regional stations could be linked to and downloadable. USGS and WSC provide long term data sets for stream flow monitoring stations in the U.S. and Canada respectively.</p>
+
+<p>A map interface would also be useful for locating nearby stations once the user inputs coordinates for their station.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='An Example Data Set'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Interactive LM'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Going Further'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
