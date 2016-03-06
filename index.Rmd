@@ -72,3 +72,6 @@ If possible, regional stations could be linked to and downloadable. USGS and WSC
 
 A map interface would also be useful for locating nearby stations once the user inputs coordinates for their station.
 
+See the app in action at [https://jphrase.shinyapps.io/TimeSeriesLM/](https://jphrase.shinyapps.io/TimeSeriesLM/).  
+The code for this app can be found at [https://github.com/jphrase/TimeSeriesLM](https://github.com/jphrase/TimeSeriesLM).
+
